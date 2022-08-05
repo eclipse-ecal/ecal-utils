@@ -1,6 +1,6 @@
-# ecal-shm-layer
+# ecal-utils
 
-Repository to build and test ecal shared memory layer.
+eCAL utilities library.
 
 ## How to build
 
