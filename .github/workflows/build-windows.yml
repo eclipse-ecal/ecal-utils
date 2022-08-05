@@ -1,0 +1,29 @@
+name: Build Windows Server 2019
+
+on:  
+  push:
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build-windows:
+    runs-on: windows-2019
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+      
+    - name: CMake Complete
+      run: |
+        mkdir "${{ runner.workspace }}\_build"
+        cd "${{ runner.workspace }}/_build"
+        cmake %GITHUB_WORKSPACE% -G "Visual Studio 16 2019" -A x64 -T v140 ^
+        -DCMAKE_BUILD_TYPE=Release
+      shell: cmd
+
+    - name: Build Release
+      run: cmake --build . --config Release
+      working-directory: ${{ runner.workspace }}/_build

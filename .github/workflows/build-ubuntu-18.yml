@@ -1,0 +1,56 @@
+name: Build Ubuntu 18.04
+
+on:  
+  push:
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build-ubuntu:
+    runs-on: ubuntu-18.04
+    
+    steps:
+    - name: Getting closer to vanilla Ubuntu 18.04
+      run: |
+        sudo apt-get -y update
+        
+        echo "Creating directory for libgcc1"
+        mkdir libgcc1_deb
+        cd libgcc1_deb
+        pwd
+        
+        echo "Downloading bionic-security libgcc1"
+        apt-get download -t bionic-security libgcc1
+        
+        echo "Purging GH Actions toolchain PPA"
+        sudo apt-get -y install ppa-purge
+        sudo ppa-purge -y ubuntu-toolchain-r/test
+        
+        echo "installing libgcc1_deb"
+        sudo dpkg -i *
+        
+        echo "Installing g++"
+        sudo apt-get -y install g++
+        
+        cd ..
+      shell: bash
+
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+        
+    - name: CMake
+      run: |
+        export CC=/usr/bin/gcc-7
+        export CXX=/usr/bin/g++-7
+        mkdir "${{ runner.workspace }}/_build"
+        cd "${{ runner.workspace }}/_build"
+        cmake $GITHUB_WORKSPACE
+        sudo mkdir /etc/ecal
+      shell: bash
+
+    - name: Build Release
+      run: cmake --build . --config Release
+      working-directory: ${{ runner.workspace }}/_build
