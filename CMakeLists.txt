@@ -18,7 +18,7 @@
 
 cmake_minimum_required(VERSION 3.13)
 
-project(ecal-utils)
+project(utils)
 
 find_package(Threads REQUIRED)
 
