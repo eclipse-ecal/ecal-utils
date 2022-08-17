@@ -45,6 +45,8 @@ add_library(${PROJECT_NAME}
       ${ecal_utils_src}
 )
 
+set_property(TARGET ${PROJECT_NAME} PROPERTY POSITION_INDEPENDENT_CODE ON)
+
 add_library(eCAL::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
 
 target_include_directories(${PROJECT_NAME} PRIVATE src/)
