@@ -40,8 +40,9 @@ set(ecal_utils_src
 )
 
 add_library(${PROJECT_NAME}
-    ${ecal_utils_includes}
-    ${ecal_utils_src}
+    STATIC
+      ${ecal_utils_includes}
+      ${ecal_utils_src}
 )
 
 add_library(eCAL::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
